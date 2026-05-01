@@ -1,0 +1,3 @@
+source;share/deepracer_node_monitor/hook/pythonpath.ps1
+source;share/deepracer_node_monitor/hook/pythonpath.dsv
+source;share/deepracer_node_monitor/hook/pythonpath.sh

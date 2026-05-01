@@ -1,0 +1,3 @@
+source;share/node_monitor/hook/pythonpath.ps1
+source;share/node_monitor/hook/pythonpath.dsv
+source;share/node_monitor/hook/pythonpath.sh

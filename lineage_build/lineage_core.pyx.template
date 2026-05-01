@@ -1,0 +1,35 @@
+"""
+Lineage hash computation module (Cython compiled).
+"""
+import hashlib
+
+cdef bytes _SALT = bytes.fromhex("__SALT_PLACEHOLDER__")
+
+def compute_pb_hash(bytes pb_content, list chain) -> str:
+    h = hashlib.sha256()
+    for c in chain:
+        if isinstance(c, str):
+            h.update(c.encode('utf-8'))
+        else:
+            h.update(str(c).encode('utf-8'))
+    h.update(hashlib.sha256(pb_content).digest())
+    h.update(_SALT)
+    return h.hexdigest()
+
+def compute_ckpt_hash(bytes ckpt_content, list chain) -> str:
+    h = hashlib.sha256()
+    for c in chain:
+        if isinstance(c, str):
+            h.update(c.encode('utf-8'))
+        else:
+            h.update(str(c).encode('utf-8'))
+    h.update(hashlib.sha256(ckpt_content).digest())
+    h.update(_SALT)
+    return h.hexdigest()
+
+def compute_final_hash(str pb_hash, str ckpt_hash) -> str:
+    h = hashlib.sha256()
+    h.update(pb_hash.encode('utf-8'))
+    h.update(ckpt_hash.encode('utf-8'))
+    h.update(_SALT)
+    return h.hexdigest()
