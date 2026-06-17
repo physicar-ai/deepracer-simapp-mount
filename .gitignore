@@ -1,0 +1,23 @@
+__pycache__/
+
+# ── 커스텀 트랙 (사용자 업로드) ──
+# 루트 레벨 deploy 사본
+info/custom_*
+meshes/custom_*
+models/custom_*
+routes/custom_*
+thumbnail/custom_*
+track_iconography/custom_*
+worlds/custom_*
+
+# simapp share 경로 내 커스텀 트랙 파일
+deepracer_simulation_environment/share/deepracer_simulation_environment/info/custom_*
+deepracer_simulation_environment/share/deepracer_simulation_environment/meshes/custom_*
+deepracer_simulation_environment/share/deepracer_simulation_environment/models/custom_*
+deepracer_simulation_environment/share/deepracer_simulation_environment/routes/custom_*
+deepracer_simulation_environment/share/deepracer_simulation_environment/thumbnail/custom_*
+deepracer_simulation_environment/share/deepracer_simulation_environment/track_iconography/custom_*
+deepracer_simulation_environment/share/deepracer_simulation_environment/worlds/custom_*
+
+# 커스텀 트랙 레지스트리
+deepracer_simulation_environment/share/deepracer_simulation_environment/custom_tracks.yml

@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot
+  name="physicar_single_cam_lidar" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="wheelbase" value="0.18"/>
+  <xacro:property name="track_width" value="0.16"/>
+  <xacro:property name="wheel_radius" value="0.0375"/>
+  <xacro:property name="wheel_width" value="0.035"/>
+  <xacro:property name="chassis_height" value="0.026"/>
+
+  <link
+    name="base_link" />
+  <link
+    name="chassis">
+    <inertial>
+      <origin
+        xyz="0 0 0.025"
+        rpy="0 0 0" />
+      <mass
+        value="5.0" />
+      <inertia
+        ixx="0.010609"
+        ixy="0"
+        ixz="0"
+        iyy="0.050409"
+        iyz="0"
+        izz="0.05865" />
+    </inertial>
+  </link>
+  <joint name="base_link_joint" type="fixed">
+    <origin xyz="0 0 ${chassis_height}" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="chassis" />
+  </joint>
+
+  <!-- ========== REAR WHEELS ========== -->
+  <!-- SDF: left visual rpy=(0,0,pi), right visual rpy=(0,0,0) -->
+  <!-- SDF: collision cylinder rpy=(pi/2,0,0) to align axis with Y -->
+  <link
+    name="left_rear_wheel">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.34055" />
+      <inertia
+        ixx="0.00026046"
+        ixy="0"
+        ixz="0"
+        iyy="0.00041226"
+        iyz="0"
+        izz="0.00026046" />
+    </inertial>
+    <xacro:unless value="${'with_wheel' in body_shell_type_val}">
+      <visual>
+        <origin
+          xyz="0 0.0175 0"
+          rpy="0 0 3.14159" />
+        <geometry>
+          <mesh
+            filename="package://deepracer_simulation_environment/meshes/physicar/Wheel.dae" />
+        </geometry>
+      </visual>
+    </xacro:unless>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="1.5708 0 0" />
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_rear_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="${-wheelbase/2} ${track_width/2} ${wheel_radius - chassis_height}"
+      rpy="0 0 0" />
+    <parent
+      link="chassis" />
+    <child
+      link="left_rear_wheel" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      effort="10"
+      velocity="100" />
+  </joint>
+
+  <link
+    name="right_rear_wheel">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.34055" />
+      <inertia
+        ixx="0.00026046"
+        ixy="0"
+        ixz="0"
+        iyy="0.00041226"
+        iyz="0"
+        izz="0.00026046" />
+    </inertial>
+    <xacro:unless value="${'with_wheel' in body_shell_type_val}">
+      <visual>
+        <origin
+          xyz="0 -0.0175 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://deepracer_simulation_environment/meshes/physicar/Wheel.dae" />
+        </geometry>
+      </visual>
+    </xacro:unless>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="1.5708 0 0" />
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_rear_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="${-wheelbase/2} ${-track_width/2} ${wheel_radius - chassis_height}"
+      rpy="0 0 0" />
+    <parent
+      link="chassis" />
+    <child
+      link="right_rear_wheel" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      effort="10"
+      velocity="100" />
+  </joint>
+
+  <!-- ========== FRONT STEERING and WHEELS ========== -->
+  <link
+    name="left_steering_hinge">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="4E-06"
+        ixy="0"
+        ixz="0"
+        iyy="4E-06"
+        iyz="0"
+        izz="4E-06" />
+    </inertial>
+  </link>
+  <joint
+    name="left_steering_hinge_joint"
+    type="continuous">
+    <origin
+      xyz="${wheelbase/2} ${track_width/2} ${wheel_radius - chassis_height}"
+      rpy="0 0 0" />
+    <parent
+      link="chassis" />
+    <child
+      link="left_steering_hinge" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1"
+      upper="1"
+      effort="10"
+      velocity="100" />
+  </joint>
+
+  <link
+    name="left_front_wheel">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.34055" />
+      <inertia
+        ixx="0.00026046"
+        ixy="0"
+        ixz="0"
+        iyy="0.00041226"
+        iyz="0"
+        izz="0.00026046" />
+    </inertial>
+    <xacro:unless value="${'with_wheel' in body_shell_type_val}">
+      <visual>
+        <origin
+          xyz="0 0.0175 0"
+          rpy="0 0 3.14159" />
+        <geometry>
+          <mesh
+            filename="package://deepracer_simulation_environment/meshes/physicar/Wheel.dae" />
+        </geometry>
+      </visual>
+    </xacro:unless>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="1.5708 0 0" />
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_front_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="left_steering_hinge" />
+    <child
+      link="left_front_wheel" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      effort="10"
+      velocity="100" />
+  </joint>
+
+  <link
+    name="right_steering_hinge">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="4E-06"
+        ixy="0"
+        ixz="0"
+        iyy="4E-06"
+        iyz="0"
+        izz="4E-06" />
+    </inertial>
+  </link>
+  <joint
+    name="right_steering_hinge_joint"
+    type="continuous">
+    <origin
+      xyz="${wheelbase/2} ${-track_width/2} ${wheel_radius - chassis_height}"
+      rpy="0 0 0" />
+    <parent
+      link="chassis" />
+    <child
+      link="right_steering_hinge" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1"
+      upper="1"
+      effort="10"
+      velocity="100" />
+  </joint>
+
+  <link
+    name="right_front_wheel">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.34055" />
+      <inertia
+        ixx="0.00026046"
+        ixy="0"
+        ixz="0"
+        iyy="0.00041226"
+        iyz="0"
+        izz="0.00026046" />
+    </inertial>
+    <xacro:unless value="${'with_wheel' in body_shell_type_val}">
+      <visual>
+        <origin
+          xyz="0 -0.0175 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://deepracer_simulation_environment/meshes/physicar/Wheel.dae" />
+        </geometry>
+      </visual>
+    </xacro:unless>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="1.5708 0 0" />
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_front_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="right_steering_hinge" />
+    <child
+      link="right_front_wheel" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      effort="10"
+      velocity="100" />
+  </joint>
+
+  <!-- ========== CAMERA (ServoPan + ServoTilt, 15 deg downward tilt) ========== -->
+  <!-- SDF: camera_pan_joint at (0.05, 0, 0.1195) from base_footprint -->
+  <!--      In chassis frame: z = 0.1195 - 0.026 = 0.0935 -->
+  <!-- SDF: ServoPan.dae visual pose: (-0.05, 0, -0.1) relative to pan link -->
+  <link
+    name="servo_pan_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="1E-05" ixy="0" ixz="0" iyy="1E-05" iyz="0" izz="1E-05" />
+    </inertial>
+    <visual>
+      <origin xyz="-0.05 0 -0.1" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://deepracer_simulation_environment/meshes/physicar/ServoPan.dae" />
+      </geometry>
+    </visual>
+  </link>
+  <joint name="servo_pan_joint" type="fixed">
+    <origin xyz="0.05 0 0.0935" rpy="0 0 0" />
+    <parent link="chassis" />
+    <child link="servo_pan_link" />
+  </joint>
+
+  <!-- SDF: camera_tilt_joint at (0.025, 0, 0.013) from pan link -->
+  <!-- SDF: ServoTilt.dae visual pose: (-0.075, 0, -0.113) relative to tilt link -->
+  <!-- SDF: camera_tilt_link inertial CoM: (0.0095, 0, 0.0035) -->
+  <link
+    name="zed_camera_link">
+    <inertial>
+      <origin
+        xyz="0.0095 0 0.0035"
+        rpy="0 0 0" />
+      <mass
+        value="0.04" />
+      <inertia
+        ixx="7.47E-06"
+        ixy="0"
+        ixz="-3.99E-06"
+        iyy="1.83E-05"
+        iyz="0"
+        izz="1.683E-05" />
+    </inertial>
+    <xacro:unless value="${'f1' in body_shell_type_val}">
+      <visual>
+        <origin
+          xyz="-0.075 0 -0.113"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://deepracer_simulation_environment/meshes/physicar/ServoTilt.dae" />
+        </geometry>
+      </visual>
+    </xacro:unless>
+  </link>
+  <joint
+    name="zed_camera_joint"
+    type="fixed">
+    <!-- 15 deg downward tilt (0.2618 rad) -->
+    <origin
+      xyz="0.025 0 0.013"
+      rpy="0 0.2618 0" />
+    <parent
+      link="servo_pan_link" />
+    <child
+      link="zed_camera_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <link
+    name="camera_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.001" />
+      <inertia
+        ixx="1E-06"
+        ixy="0"
+        ixz="0"
+        iyy="1E-06"
+        iyz="0"
+        izz="1E-06" />
+    </inertial>
+  </link>
+  <joint
+    name="camera_joint"
+    type="fixed">
+    <origin
+      xyz="0.030 0 0.014"
+      rpy="0 0 0" />
+    <parent
+      link="zed_camera_link" />
+    <child
+      link="camera_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <!-- ========== LIDAR (Forward-facing RPLidarC1) ========== -->
+  <!-- SDF: lidar at (-0.027, 0, 0.182) from base_footprint -->
+  <!--      In chassis frame: z = 0.182 - 0.026 = 0.156 -->
+  <!-- SDF: RPLidarC1.dae is lumped into base visual at z=0.0195 -->
+  <!--      As separate link, visual offset = -(joint z) + sdf_visual_z -->
+  <!--      = -0.156 + 0.0195 - 0.026 = relative to link origin -->
+  <link
+    name="laser">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="1E-05"
+        ixy="0"
+        ixz="0"
+        iyy="1E-05"
+        iyz="0"
+        izz="1E-05" />
+    </inertial>
+    <xacro:unless value="${'f1' in body_shell_type_val}">
+      <visual>
+        <origin
+          xyz="0.027 0 -0.1365"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://deepracer_simulation_environment/meshes/physicar/RPLidarC1.dae" />
+        </geometry>
+      </visual>
+    </xacro:unless>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.035" length="0.04"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="hokuyo_joint"
+    type="fixed">
+    <!-- LIDAR faces FORWARD (rpy 0 0 0), NOT backward like DeepRacer -->
+    <origin
+      xyz="-0.027 0 0.156"
+      rpy="0 0 0" />
+    <parent
+      link="chassis" />
+    <child
+      link="laser" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <!-- ========== CAR BODY (Base + Body meshes) ========== -->
+  <!-- SDF base visuals from base_footprint (z=0 ground level): -->
+  <!--   Base.dae at z=0.0415 → chassis frame: z = 0.0415 - 0.026 = 0.0155 -->
+  <!--   Body.dae at z=0.0195 → chassis frame: z = 0.0195 - 0.026 = -0.0065 -->
+  <link
+    name="car_body_link_v3">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <xacro:unless value="${'f1' in body_shell_type_val}">
+      <visual>
+        <origin
+          xyz="0 0 0.0155"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://deepracer_simulation_environment/meshes/physicar/Base.dae" />
+        </geometry>
+      </visual>
+      <visual>
+        <origin
+          xyz="0 0 -0.0065"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://deepracer_simulation_environment/meshes/physicar/Body.dae" />
+        </geometry>
+      </visual>
+    </xacro:unless>
+  </link>
+  <joint
+    name="car_body_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="chassis" />
+    <child
+      link="car_body_link_v3" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>

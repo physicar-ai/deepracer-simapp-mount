@@ -1,0 +1,17 @@
+source;share/aws_robomaker_gazebo_ros/hook/cmake_prefix_path.ps1
+source;share/aws_robomaker_gazebo_ros/hook/cmake_prefix_path.dsv
+source;share/aws_robomaker_gazebo_ros/hook/cmake_prefix_path.sh
+source;share/aws_robomaker_gazebo_ros/hook/pkg_config.ps1
+source;share/aws_robomaker_gazebo_ros/hook/pkg_config.dsv
+source;share/aws_robomaker_gazebo_ros/hook/pkg_config.sh
+source;share/aws_robomaker_gazebo_ros/hook/ros_package_path.ps1
+source;share/aws_robomaker_gazebo_ros/hook/ros_package_path.dsv
+source;share/aws_robomaker_gazebo_ros/hook/ros_package_path.sh
+source;share/aws_robomaker_gazebo_ros/hook/pkg_config_path.ps1
+source;share/aws_robomaker_gazebo_ros/hook/pkg_config_path.dsv
+source;share/aws_robomaker_gazebo_ros/hook/pkg_config_path.sh
+source;share/aws_robomaker_gazebo_ros/hook/pkg_config_path_multiarch.ps1
+source;share/aws_robomaker_gazebo_ros/hook/pkg_config_path_multiarch.dsv
+source;share/aws_robomaker_gazebo_ros/hook/pkg_config_path_multiarch.sh
+source;share/aws_robomaker_gazebo_ros/hook/catkin_env_hook_workspace.bash
+source;share/aws_robomaker_gazebo_ros/catkin_env_hook/worldforge.overlay.bash

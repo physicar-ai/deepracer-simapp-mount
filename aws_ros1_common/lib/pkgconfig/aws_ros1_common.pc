@@ -1,0 +1,8 @@
+prefix=/opt/bundle/install/aws_ros1_common
+
+Name: aws_ros1_common
+Description: Description of aws_ros1_common
+Version: 2.0.1
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -laws_ros1_common
+Requires: 

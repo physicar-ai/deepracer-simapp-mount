@@ -1,0 +1,8 @@
+prefix=/opt/bundle/install/aws_robomaker_gazebo_ros
+
+Name: aws_robomaker_gazebo_ros
+Description: Description of aws_robomaker_gazebo_ros
+Version: 1.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
