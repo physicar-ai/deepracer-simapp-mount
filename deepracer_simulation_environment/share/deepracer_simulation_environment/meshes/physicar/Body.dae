@@ -151,13 +151,28 @@
     </effect>
     <effect id="display-effect">
       <profile_COMMON>
+        <newparam sid="display-surface">
+          <surface type="2D">
+            <init_from>display-image</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="display-sampler">
+          <sampler2D>
+            <source>display-surface</source>
+            <minfilter>LINEAR_MIPMAP_LINEAR</minfilter>
+            <magfilter>LINEAR</magfilter>
+          </sampler2D>
+        </newparam>
         <technique sid="common">
           <phong>
             <emission>
               <color sid="emission">0 0 0 1</color>
             </emission>
+            <ambient>
+              <color sid="ambient">1 1 1 1</color>
+            </ambient>
             <diffuse>
-              <color sid="diffuse">0 0 0.2113756 1</color>
+              <texture texture="display-sampler" texcoord="UVMap"/>
             </diffuse>
             <specular>
               <color sid="specular">0.6 0.6 0.6 1</color>
@@ -166,7 +181,7 @@
               <float sid="shininess">50</float>
             </shininess>
             <reflectivity>
-              <float sid="specular">1</float>
+              <float sid="reflectivity">1</float>
             </reflectivity>
             <index_of_refraction>
               <float sid="ior">1.45</float>
@@ -1119,7 +1134,11 @@
       </profile_COMMON>
     </effect>
   </library_effects>
-  <library_images/>
+  <library_images>
+    <image id="display-image" name="display-image">
+      <init_from>textures/display.png</init_from>
+    </image>
+  </library_images>
   <library_materials>
     <material id="mat_0_004-material" name="mat_0.004">
       <instance_effect url="#mat_0_004-effect"/>

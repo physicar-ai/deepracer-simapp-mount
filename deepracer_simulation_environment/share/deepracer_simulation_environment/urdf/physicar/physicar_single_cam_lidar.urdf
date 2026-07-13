@@ -27,6 +27,21 @@
         iyz="0"
         izz="0.05865" />
     </inertial>
+    <!-- 원색 유지 그룹(색칠 제외): 하부 프레임(모터·배선·서스펜션)과
+         내부 디테일(전원 스위치·디스플레이·메인보드·배터리) — chassis 링크라
+         비주얼 이름에 car_body_link가 없어 SetVisualColors가 건드리지 않음 -->
+    <visual>
+      <origin xyz="0 0 0.0155" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://deepracer_simulation_environment/meshes/physicar/Base.dae" />
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 -0.0065" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://deepracer_simulation_environment/meshes/physicar/Body_details.dae" />
+      </geometry>
+    </visual>
   </link>
   <joint name="base_link_joint" type="fixed">
     <origin xyz="0 0 ${chassis_height}" rpy="0 0 0" />
@@ -333,12 +348,7 @@
       <mass value="0.05" />
       <inertia ixx="1E-05" ixy="0" ixz="0" iyy="1E-05" iyz="0" izz="1E-05" />
     </inertial>
-    <visual>
-      <origin xyz="-0.05 0 -0.1" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="package://deepracer_simulation_environment/meshes/physicar/ServoPan.dae" />
-      </geometry>
-    </visual>
+    <!-- 비주얼은 car_body_link_v3로 이동 — 팬 하우징은 다중 시뮬레이터 색칠 대상 -->
   </link>
   <joint name="servo_pan_joint" type="fixed">
     <origin xyz="0.05 0 0.0935" rpy="0 0 0" />
@@ -366,13 +376,14 @@
         izz="1.683E-05" />
     </inertial>
     <xacro:unless value="${'f1' in body_shell_type_val}">
+      <!-- 카메라 눈(렌즈·IR LED·PCB·모듈 홀더)만 — 원색 유지 (색칠 제외) -->
       <visual>
         <origin
           xyz="-0.075 0 -0.113"
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://deepracer_simulation_environment/meshes/physicar/ServoTilt.dae" />
+            filename="package://deepracer_simulation_environment/meshes/physicar/ServoTilt_detail.dae" />
         </geometry>
       </visual>
     </xacro:unless>
@@ -501,13 +512,15 @@
         izz="0" />
     </inertial>
     <xacro:unless value="${'f1' in body_shell_type_val}">
+      <!-- 색칠 대상(다중 시뮬레이터 car_color): 상부 케이스 + 카메라 팬/틸트 하우징.
+           SetVisualColors가 "car_body_link"를 포함한 비주얼만 덮어쓴다. -->
       <visual>
         <origin
-          xyz="0 0 0.0155"
+          xyz="0 0 -0.0065"
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://deepracer_simulation_environment/meshes/physicar/Base.dae" />
+            filename="package://deepracer_simulation_environment/meshes/physicar/Body_case.dae" />
         </geometry>
       </visual>
       <visual>
@@ -516,7 +529,17 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://deepracer_simulation_environment/meshes/physicar/Body.dae" />
+            filename="package://deepracer_simulation_environment/meshes/physicar/ServoPan.dae" />
+        </geometry>
+      </visual>
+      <!-- 틸트 하우징: zed 프레임(-0.075,0,-0.113 @15°)을 chassis 프레임으로 역산 -->
+      <visual>
+        <origin
+          xyz="-0.026691 0 0.016761"
+          rpy="0 0.2618 0" />
+        <geometry>
+          <mesh
+            filename="package://deepracer_simulation_environment/meshes/physicar/ServoTilt_housing.dae" />
         </geometry>
       </visual>
     </xacro:unless>
