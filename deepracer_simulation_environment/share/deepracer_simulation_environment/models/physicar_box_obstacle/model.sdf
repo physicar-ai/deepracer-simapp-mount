@@ -18,11 +18,10 @@
 
       <collision name='collision'>
         <pose frame="">0 0 0 0 0 0</pose>
+        <!-- 박스 프리미티브 콜리전: 메시 콜리전은 물리 비용만 크고, 판정 크기의
+             SDF 실측 파싱(obstacles_agent_ctrl)도 box <size>를 읽는다 -->
         <geometry>
-          <mesh>
-            <scale>1.0 1.0 1.0</scale>
-            <uri>model://meshes/physicar_box_obstacle/physicar_box_obstacle.dae</uri>
-          </mesh>
+          <box><size>0.362 0.242 0.242</size></box>
         </geometry>
         <surface>
         <contact>
