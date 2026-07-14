@@ -50,6 +50,9 @@ DEFAULT_UPDATE_RATE=$(awk -v step=$MAX_STEP_SIZE 'BEGIN{ printf "%0.6f", 1.0/ste
 	flock -x 200
 	TMP_WORLD=$(mktemp "${WORLD_FILE}.tmp.XXXXXX")
 	cp "$WORLD_FILE" "$TMP_WORLD"
+	# mktemp creates 0600 files; keep the original mode so the file stays
+	# readable outside the container after the atomic replace below
+	chmod --reference="$WORLD_FILE" "$TMP_WORLD"
 	if xmlstarlet sel -t -c '/sdf/world/physics' "$TMP_WORLD" >/dev/null 2>&1; then
 		xmlstarlet ed -L -u '/sdf/world/physics/max_step_size' -v $MAX_STEP_SIZE $TMP_WORLD
 		xmlstarlet ed -L -u '/sdf/world/physics/real_time_update_rate' -v $DEFAULT_UPDATE_RATE $TMP_WORLD 2>/dev/null \
@@ -80,6 +83,7 @@ if [[ -n "${RTF_OVERRIDE}" ]]; then
 		flock -x 200
 		TMP_WORLD=$(mktemp "${WORLD_FILE}.tmp.XXXXXX")
 		cp "$WORLD_FILE" "$TMP_WORLD"
+		chmod --reference="$WORLD_FILE" "$TMP_WORLD"
 		if xmlstarlet sel -t -c '/sdf/world/physics/real_time_factor' "$TMP_WORLD" >/dev/null 2>&1; then
 			xmlstarlet ed -L -u '/sdf/world/physics/real_time_factor' -v ${RTF_OVERRIDE} $TMP_WORLD
 			xmlstarlet ed -L -u '/sdf/world/physics/real_time_update_rate' -v ${RTF_UPDATE_RATE} $TMP_WORLD
